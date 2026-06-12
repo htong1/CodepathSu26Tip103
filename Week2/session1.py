@@ -290,41 +290,180 @@
 
 # print(find_common_artifacts(artifacts1, artifacts2))
 
-'''
-Problem 3: Souvenir Declutter
-Approach:
-'''
+# '''
+# Problem 3: Souvenir Declutter
+# Approach:
+# '''
 
-from collections import Counter
-def declutter(souvenirs, threshold):
-    result = []
-    freq = Counter(souvenirs)
-    for key,value in freq.items():
-        if value < threshold:
-            result.append(key)
-    return result
+# from collections import Counter
+# def declutter(souvenirs, threshold):
+#     result = []
+#     freq = Counter(souvenirs)
+#     for key,value in freq.items():
+#         if value < threshold:
+#             result.append(key)
+#     return result
 
-souvenirs1 = ["coin", "alien egg", "coin", "coin", "map", "map", "statue"]
-threshold1 = 3
+# souvenirs1 = ["coin", "alien egg", "coin", "coin", "map", "map", "statue"]
+# threshold1 = 3
 
-souvenirs2 = ["postcard", "postcard", "postcard", "sword"]
-threshold = 2
+# souvenirs2 = ["postcard", "postcard", "postcard", "sword"]
+# threshold = 2
 
-'''
-Problem 4: Time Portals
-Approach:
-'''
+# '''
+# Problem 4: Time Portals
+# Approach:
+# '''
 
-def num_of_time_portals(portals, destination):
+# def num_of_time_portals(portals, destination):
+#     count = 0
+#     elements = {}
+#     for i in range(len(portals)):
+#         if portals[i] not in elements:
+#             elements[portals[i]] = [i]
+#         else:
+#             elements[portals[i]].append(i)
+#     for i in range(len(portals)):
+#         end = destination[len(portals[i]):]
+#         if end in elements:
+#             for j in elements[end]:
+#                 if i != j:
+#                     count+=1
+#     return count
+            
     
 
-portals1 = ["777", "7", "77", "77"]
-destination1 = "7777"
-portals2 = ["123", "4", "12", "34"]
-destination2 = "1234"
-portals3 = ["1", "1", "1"]
-destination3 = "11"
+# portals1 = ["777", "7", "77", "77"]
+# destination1 = "7777"
+# portals2 = ["123", "4", "12", "34"]
+# destination2 = "1234"
+# portals3 = ["1", "1", "1"]
+# destination3 = "11"
 
-print(num_of_time_portals(portals1, destination1))
-print(num_of_time_portals(portals2, destination2))
-print(num_of_time_portals(portals3, destination3))
+# print(num_of_time_portals(portals1, destination1))
+# print(num_of_time_portals(portals2, destination2))
+# print(num_of_time_portals(portals3, destination3))
+
+# '''
+# Problem 5: Detect Temporal Anomaly
+# '''
+
+# def detect_temporal_anomaly(time_points, k):
+#     f = {}
+#     for i in range(len(time_points)):
+#         if time_points[i] not in f:
+#             f[time_points[i]] = i
+#         else:
+#             if abs(f[time_points[i]]-i) <= k:
+#                 return True
+#             else:
+#                 f[time_points[i]] = i
+#     return False
+    
+
+# time_points1 = [1, 2, 3, 1]
+# k1 = 3
+
+# time_points2 = [1, 0, 1, 1]
+# k2 = 1
+
+# time_points3 = [1, 2, 3, 1, 2, 3]
+# k3 = 2
+
+# print(detect_temporal_anomaly(time_points1, k1))  
+# print(detect_temporal_anomaly(time_points2, k2)) 
+# print(detect_temporal_anomaly(time_points3, k3)) 
+
+'''
+Problem 6: Time Portal Race Rankings
+Approach:
+'''
+
+def find_travelers(races):
+    freq = {}
+    result = []
+    one = []
+    two = []
+    s = set()
+    for element in races:
+        s.add(element[0])
+        s.add(element[1])
+        if element[1] not in freq:
+            freq[element[1]] = 1
+        else:
+            freq[element[1]] += 1
+    for element in s:
+        if element not in freq:
+            one.append(element)
+        elif freq[element] == 1:
+            two.append(element)
+    result.append(one)
+    result.append(two)
+    return result
+
+races1 = [[1, 3], [2, 3], [3, 6], [5, 6], [5, 7], [4, 5], [4, 8], [4, 9], [10, 4], [10, 9]]
+races2 = [[2, 3], [1, 3], [5, 4], [6, 4]]
+
+print(find_travelers(races1))  
+print(find_travelers(races2)) 
+
+'''
+Problem 7: Lingual Frequencies
+Approach: split the text string by spaces to get a list of words
+make a frequency map of those words
+find max count that is not in illegibles
+'''
+
+import re
+
+def find_most_frequent_word(text, illegibles):
+    text  = re.sub(r'[^\w\s]', '', text)
+    words = text.lower().split(" ")
+    freq={}
+    for word in words:
+        if word not in freq:
+            freq[word] = 1
+        else:
+            freq[word] +=1
+    max_count = 0
+    max_word = ""
+    for key, value in freq.items():
+        if value > max_count and key not in illegibles:
+            max_count = value
+            max_word = key
+    return max_word
+
+paragraph1 = "a."
+illegibles1 = []
+print(find_most_frequent_word(paragraph1, illegibles1)) 
+
+paragraph2 = "Bob hit a ball, the hit BALL flew far after it was hit."
+illegibles2 = ["hit"]
+print(find_most_frequent_word(paragraph2, illegibles2)) 
+
+'''
+Problem 8: Time Portal Usage
+Approach:
+'''
+
+def display_time_portal_usage(usage_records):
+    pass
+
+usage_records1 = [["David","3","10:00"],
+                  ["Corina","10","10:15"],
+                  ["David","3","10:30"],
+                  ["Carla","5","11:00"],
+                  ["Carla","5","10:00"],
+                  ["Rous","3","10:00"]]
+usage_records2 = [["James","12","11:00"],
+                  ["Ratesh","12","11:00"],
+                  ["Amadeus","12","11:00"],
+                  ["Adam","1","09:00"],
+                  ["Brianna","1","09:00"]]
+usage_records3 = [["Laura","2","08:00"],
+                  ["Jhon","2","08:15"],
+                  ["Melissa","2","08:30"]]
+
+print(display_time_portal_usage(usage_records1))
+print(display_time_portal_usage(usage_records2))
+print(display_time_portal_usage(usage_records3))
