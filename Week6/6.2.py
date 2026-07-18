@@ -212,3 +212,235 @@ def reverse_first_k(head, k):
 head = Node("apple", Node("cherry", Node("orange", Node("peach", Node("pear")))))
 
 print_linked_list(reverse_first_k(head, 3))
+
+'''
+Problem 1: Array to Linked List
+'''
+
+class Player:
+    def __init__(self, character, kart):
+        self.character = character
+        self.kart = kart
+        self.items = []
+
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value.character, end=" -> " if current.next else "\n")
+        current = current.next
+
+def arr_to_ll(arr):
+    if not arr:                        
+        return None
+    head = Node(arr[0])
+    length = len(arr)
+    current = head
+    for i in range(1, length):          
+        next_node = Node(arr[i])
+        current.next = next_node
+        current = next_node
+    return head
+
+mario = Player("Mario", "Mushmellow")
+luigi = Player("Luigi", "Standard LG")
+peach = Player("Peach", "Bumble V")
+
+print_linked_list(arr_to_ll([mario, luigi, peach]))
+print_linked_list(arr_to_ll([peach]))
+
+'''
+Problem 2: Get it out of here!
+'''
+
+class Node:
+    def __init__(self, value=None, next=None):
+        self.value = value
+        self.next = next
+
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
+
+# Function with a bug!
+def remove_by_value(head, val):
+    if not head:
+        return None
+    if head.value == val:
+        return head.next  
+
+    current = head
+    while current.next:
+        if current.next.value == val:
+            current.next = current.next.next  
+            return head  
+        current = current.next
+
+    return head
+
+head = Node("Daisy", Node("Mario", Node("Waluigi", Node("Baby Peach"))))
+
+print_linked_list(remove_by_value(head, "Waluigi"))
+
+'''
+Problem 3: Partition List Around Value
+Approach: build two linked lists, one with value smaller than the threshold, and one with values larger than the threshold
+then, link them together
+'''
+
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
+
+def partition(head, val):
+    less_dummy = Node(0)
+    greater_dummy = Node(0)
+    currentL = less_dummy
+    currentG = greater_dummy
+
+    current = head
+    while current:
+        if current.value < val:
+            currentL.next = current
+            currentL=currentL.next
+        else:
+            currentG.next = current
+            currentG=currentG.next
+        current=current.next
+    
+    currentG.next = None
+    currentL.next = greater_dummy.next
+
+    return less_dummy.next
+
+head = Node(1, Node(4, Node(3, Node(2, Node(5, Node(2))))))
+
+print_linked_list(partition(head, 3))
+
+'''
+Problem 4: Middle Match
+'''
+
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
+
+def middle_match(head, val):
+    fast = head
+    slow = head
+    while fast and fast.next:
+        fast=fast.next.next
+        slow=slow.next
+    if slow.value == val:
+        return True
+    else:
+        return False
+
+kart_choices = Node("Bullet Bike", Node("Wild Wing", Node("Pirahna Prowler")))
+tournament_tracks = Node("Rainbow Road", Node("Bowser Castle", Node("Sherbet Land", Node("Yoshi Valley"))))
+
+print(middle_match(kart_choices, "Wild Wing"))
+print(middle_match(tournament_tracks, "Bowser Castle"))
+
+'''
+Problem 5: Put it in Reverse
+'''
+
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
+
+
+def reverse(head):
+    current = head
+    previous = None
+    while current:
+        next_node = current.next
+        current.next=previous
+        previous=current
+        current=next_node
+    return previous
+
+kart_choices = Node("Bullet Bike", Node("Wild Wing", Node("Pirahna Prowler")))
+
+print_linked_list(reverse(kart_choices))
+
+'''
+Problem 6: Symmetrical
+Approach: use the fast/slow pointer technique to find the middle of the linked list
+then, reverse the second half of the linked list
+then, go inward to check if each node is equal to each other
+'''
+
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
+
+def is_symmetric(head):
+    fast=head
+    slow=head
+    while fast and fast.next:
+        fast=fast.next.next
+        slow=slow.next
+    #now, slow is at the middle node. we now reverse the linked list
+    previous=None
+    current=slow
+    while current:
+        next_node = current.next
+        current.next=previous
+        previous=current
+        current=next_node
+    #now, the second half of the linked list has been reversed. now, iterate through both halves to check that the nodes are the same. current is pointing at the first node (last node) after reversal, and we get another pointer to start at the head of the linked list
+    start=head
+    while start and previous:
+        if start.value != previous.value:
+            return False
+        start=start.next
+        previous=previous.next
+    return True
+
+head1 = Node("Bitterling", Node("Crawfish", Node("Bitterling")))
+head2 = Node("Bitterling", Node("Carp", Node("Koi")))
+
+print(is_symmetric(head1))
+print(is_symmetric(head2))
